@@ -34,21 +34,24 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         //
+      //  dd($request->all());
         $this->validate($request,
         [
-          'about' => 'required|max:255',
-          'crops' => 'required|max:255',
-          'location'  => 'required',
-        'username' => 'required|max:50|min:6|alpha_dash|unique:users',
+          'about' => 'max:255',
+          'crops' => 'max:255',
+
+        'username' => 'max:50|min:6',
         ]);
+
+
         if($request->hasFile('avatar')){
             $avatar =  $request->file('avatar');
             $filename = time() . '.' . $avatar->getClientOriginalExtension();
           Image::make($avatar)->resize(500, 500)->save(public_path('storage/users_avatars/' .  $filename));
 
-
-
-        }
+Auth::user()->update([  'avatar'  =>   $filename]);
+  }
+//  dd($filename);
         Auth::user()->profile()->update([
           'about' => $request->about,
           'crops' => $request->crops
@@ -58,7 +61,7 @@ class ProfileController extends Controller
         Auth::user()->update([
           'location' => $request->location,
           'username' => $request->username,
-          'avatar'  =>   $filename
+
 
 
                 ]);

@@ -79,6 +79,7 @@
         right: 0;
         left: 50%;
         width: 300px;
+        top:20px;
         margin-left: -150px;
     }
 }

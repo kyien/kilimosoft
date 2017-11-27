@@ -9,6 +9,7 @@ use App\Buyer;
 use Validator;
 use Image;
 use Flashy;
+use App\Produce;
 
 class BuyersController extends Controller
 {
@@ -16,8 +17,9 @@ class BuyersController extends Controller
 
       public function index(){
 
+        $produces= Produce::all();
 
-        return view('buyers');
+        return view('buyers')->with('produces',$produces);
       }
 
       public function store(Request $request){
@@ -34,7 +36,7 @@ $validate=$this->validate($request,[
 
               if(!$validate){
 
-                return redirect()->withErrors($validate);
+                return redirect()->back()->withErrors($validate);
                  }
 
             if($request->hasFile('avatar')){
@@ -59,6 +61,8 @@ $validate=$this->validate($request,[
                     }
 
       }
+
+
 
 
 }

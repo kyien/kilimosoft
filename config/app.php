@@ -165,7 +165,7 @@ return [
         Propaganistas\LaravelPhone\LaravelPhoneServiceProvider::class,
         Cmgmyr\Messenger\MessengerServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        Vsmoraes\Pdf\PdfServiceProvider::class,
+        //Vsmoraes\Pdf\PdfServiceProvider::class,
         Codecourse\Notify\NotifyServiceProvider::class,
         Musonza\Groups\GroupsServiceProvider::class,
         Khill\Lavacharts\Laravel\LavachartsServiceProvider::class,
@@ -173,6 +173,9 @@ return [
          GeniusTS\Roles\RolesServiceProvider::class,
          MercurySeries\Flashy\FlashyServiceProvider::class,
          ConsoleTVs\Charts\ChartsServiceProvider::class,
+           Anouar\Fpdf\FpdfServiceProvider::class,
+          //Stevebauman\Pdf\PdfServiceProvider::class,
+
         /*
          * Package Service Providers...
          */
@@ -187,6 +190,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -236,12 +240,14 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'PDF' => Vsmoraes\Pdf\PdfFacade::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
+      //  'PDF' => Vsmoraes\Pdf\PdfFacade::class,
         'Groups' => Musonza\Groups\Facades\GroupsFacade::class,
         'Form' => Collective\Html\FormFacade::class,
       'Html' => Collective\Html\HtmlFacade::class,
         'Flashy' => MercurySeries\Flashy\Flashy::class,
         'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
+          'Fpdf'    => Anouar\Fpdf\Facades\Fpdf::class,
 
     ],
 

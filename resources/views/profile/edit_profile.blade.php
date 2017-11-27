@@ -24,17 +24,30 @@
 
 <br>
 
-<p>
+<div class="w3-container{{ $errors->has('avatar') ? ' has-error' : '' }}">
 <label class="w3-text-grey">Upload Image :
 <input class="w3-input w3-border" type="file" name="avatar" id="avatar" value="{{$user->avatar}}" accept="image/*">
 </label>
-</p>
-<p>
+
+@if ($errors->has('avatar'))
+<span class="w3-text-red">
+  <strong>{{ $errors->first('avatar') }}</strong>
+</span>
+
+@endif
+</div>
+<div class="w3-container{{ $errors->has('username') ? ' has-error' : '' }}">
 <label class="w3-text-grey">username :
 <input class="w3-input w3-border" name="username" type="text" value="{{$user->username}}" required>
 </label>
-</p>
-<p>
+@if ($errors->has('username'))
+<span class="w3-text-red">
+  <strong>{{ $errors->first('username') }}</strong>
+</span>
+
+@endif
+</div>
+<div class="w3-container{{ $errors->has('location') ? ' has-error' : '' }}">
   <label class="w3-text-grey">location :
   <select class="w3-select" name="location">
       <option value="" disabled selected>{{$user->location}}</option>
@@ -58,17 +71,36 @@
       <option>Homa Bay</option><option>Kisii</option><option>Nyamira</option><option>Migori</option>
     </select>
   </label>
-</p>
-<p>
+  @if ($errors->has('location'))
+  <span class="w3-text-red">
+    <strong>{{ $errors->first('location') }}</strong>
+  </span>
+
+  @endif
+  </div>
+  <div class="w3-container{{ $errors->has('crops') ? ' has-error' : '' }}">
+
 <label class="w3-text-grey">Crops :
 <input class="w3-input w3-border" name="crops"  type="text" value="{{$profile->crops}}" required>
 </label>
-</p>
-<p>
+@if ($errors->has('crops'))
+<span class="w3-text-red">
+  <strong>{{ $errors->first('crops') }}</strong>
+</span>
+
+@endif
+</div>
+<div class="w3-container{{ $errors->has('about') ? ' has-error' : '' }}">
 <label class="w3-text-grey">About :
 <textarea class="w3-input w3-border" name="about" style="resize:none" required>{{$profile->about}}</textarea>
 </label>
-</p>
+@if ($errors->has('about'))
+<span class="w3-text-red">
+  <strong>{{ $errors->first('about') }}</strong>
+</span>
+
+@endif
+</div>
 <br>
 
   <p><button type="submit" class="w3-btn w3-padding w3-teal" style="width:120px">Change &nbsp; ❯</button></p>

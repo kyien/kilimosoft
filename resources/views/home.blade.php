@@ -21,16 +21,20 @@
       <!-- Accordion -->
       <div class="w3-card-2 w3-round">
         <div class="w3-accordion w3-white">
+          @if(Auth::user()->hasGroup($user->id))
         <button onclick="myFunction('Demo1')"  class="w3-btn-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> My Groups</button>
          <div id="Demo1" class="w3-accordion-content w3-container">
             <a href="{{route('mygroups',['id'=>$user->id])}}" class="w3-hover-blue">Created Groups</a>
             <a href="{{route('joined.group',['id'=>$user->id])}}" class="w3-hover-blue">Joined Groups</a>
           </div>
+          @endif
 
-
-          <button onclick="document.getElementById('id01').style.display='block'" class="w3-btn-block w3-theme-l1 w3-left-align"><i class="fa fa-plus fa-fw w3-margin-right"></i>New Group</button>
+          <a href="{{route('group.create')}}"><button class="w3-btn-block w3-theme-l1 w3-left-align"><i class="fa fa-plus fa-fw w3-margin-right"></i>New Group</button></a>
 
         <a href="{{route('show.groups',['id'=>$user->id])}}"><button  class="w3-btn-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>Join Group</button></a>
+            @if(Auth::user()->hasGroup($user->id))
+        <a href="{{route('farmers.reportallgroups',['user_id'=>$user->id])}}"><button  class="w3-btn-block w3-theme-l1 w3-left-align">All groups produce Report</button></a>
+        @endif
           <!--start of modal modal box 2 -->
           <div id="m02" class="w3-modal">
           <div class="w3-modal-content w3-card-8">
@@ -88,86 +92,6 @@
         <h2>Create Farm Group</h2>
       </header>
 
-        <form class="w3-container " enctype="multipart/form-data" action="{{route('group.store')}}" method="POST">
-          {{ csrf_field()}}
-    <br>
-
-<div class="w3-container{{ $errors->has('name') ? ' has-error' : '' }}">
-    <label class="w3-text-grey ">Group Name: </label/'+'>
-    <input class="w3-input w3-border" type="text" name="name" id="name" required=""/>
-    @if ($errors->has('firstName'))
-    <span class="w3-text-red">
-      <strong>{{ $errors->first('name') }}</strong>
-    </span>
-
-    @endif
-  </div>
-<br/>
-<div class="w3-container{{ $errors->has('location') ? ' has-error' : '' }}">
-      <label class="w3-text-grey">location (County) :
-      <select class="w3-select" name="location">
-          <option value="" disabled selected></option>
-          <option>Nairobi</option>
-          <option>Mombasa</option>
-          <option>Lamu</option>
-          <option>Kilifi</option>
-          <option>Kwale</option>
-          <option>Tana River</option>
-          <option>Taita Taveta</option>
-          <option>Garissa</option>
-          <option>Mandera</option>
-          <option>Wajir</option>
-          <option>Marsabit</option>
-          <option>Isiolo</option><option>Kitui</option><option>Makueni</option><option>Machakos</option><option>Meru</option>
-          <option>Tharaka Nithi</option><option>Embu</option><option>Nyeri</option><option>Nyandarua</option><option>Murang'a</option>
-          <option>Kiambu</option><option>Nakuru</option><option>Laikipia</option><option>Samburu</option><option>Kajiado</option>
-          <option>Narok</option><option>Bomet</option><option>Kericho</option><option>Baringo</option><option>Uasin Gishu</option>
-          <option>Nandi</option><option>Elgeyo Marakwet</option><option>West Pokot</option><option>Turkana</option><option>Trans Nzoia</option>
-          <option>Bungoma</option><option>Busia</option><option>Vihiga</option><option>Kakamega</option><option>Kisumu</option><option>Siaya</option>
-          <option>Homa Bay</option><option>Kisii</option><option>Nyamira</option><option>Migori</option>
-        </select>
-      </label>
-      @if ($errors->has('location'))
-      <span class="w3-text-red">
-        <strong>{{ $errors->first('location') }}</strong>
-      </span>
-
-      @endif
-      </div>
-<br>
-  hold <b>ctrl + leftClick </b>to select multiple produce
-<div class="w3-container{{ $errors->has('produce') ? ' has-error' : '' }}">
-<label class="w3-label w3-text-grey">Produce:
-  <!-- <textarea class="w3-input w3-border" name="produce" style="resize:none" required></textarea> -->
-    <select multiple="multiple" class="w3-select" name="produce_id[]">
-             @foreach($produces as $produce)
-             <option value="{{$produce->id}}">{{$produce->name}}</option>
-             @endforeach
-    </select>
-    </label>
-  @if ($errors->has('produce'))
-  <span class="w3-text-red">
-    <strong>{{ $errors->first('produce') }}</strong>
-  </span>
-
-  @endif
-  </div>
-  <br>
-<div class="w3-container{{ $errors->has('short_description') ? ' has-error' : '' }}">
-<label class="w3-label w3-text-grey">Short Description:</label>
-  <textarea class="w3-input w3-border" name="short_description" style="resize:none" required></textarea>
-  @if ($errors->has('short_description'))
-  <span class="w3-text-red">
-    <strong>{{ $errors->first('short_description') }}</strong>
-  </span>
-
-  @endif
-  </div>
-
-
-    <br>
-  <p><button type="submit" class="w3-btn w3-padding w3-green" style="width:120px">Create &nbsp; ❯</button></p>
-    </form>
 
       <footer class="w3-container w3-green">
         <p>Groups@kilimosoft</p>
@@ -181,7 +105,7 @@
     </div>
 
     <!-- Middle Column -->
-    <div class="w3-col l7">
+    <div class="w3-col l9">
 
 
 
@@ -199,8 +123,8 @@
               <!-- <img src="/w3images/nature.jpg" style="width:100%" alt="Nature" class="w3-margin-bottom"> -->
           </div>
         </div>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+        <!-- <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
+        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
       </div>
 
       <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
@@ -209,8 +133,7 @@
         <h4>Jane Doe</h4><br>
         <hr class="w3-clear">
         <p>  Join our farmers Platform and enjoy maximum benefit for your produce,Market information and the right crop information.  Join our farmers Platform and enjoy maximum benefit for your produce,Market information and the right crop information</p>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+          
       </div>
 
       <div class="w3-container w3-card-2 w3-white w3-round w3-margin"><br>
@@ -221,15 +144,15 @@
         <p>Have you seen this?</p>
         <img src="{{asset('dev1/images/maize.jpg')}}" style="width:100%" class="w3-margin-bottom">
         <p>  Register to our platform and get the best prices and varieties of farm produce from hundreds of cooperatives registered in our platform.  Register to our platform and get the best prices and varieties of farm produce from hundreds of cooperatives registered in our platform</p>
-        <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
-        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button>
+        <!-- <button type="button" class="w3-btn w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i>  Like</button>
+        <button type="button" class="w3-btn w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i>  Comment</button> -->
       </div>
 
     <!-- End Middle Column -->
     </div>
 
     <!-- Right Column -->
-    <div class="w3-col l2">
+    <!-- <div class="w3-col l2">
       <div class="w3-card-2 w3-round w3-white w3-center">
         <div class="w3-container">
           <p>Upcoming Events:</p>
@@ -268,7 +191,7 @@
       </div>
 
     <!-- End Right Column -->
-    </div>
+    </div> -->
 
   <!-- End Grid -->
   </div>

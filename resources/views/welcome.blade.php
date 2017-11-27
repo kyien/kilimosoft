@@ -1,7 +1,7 @@
 @extends('layouts.layout')
 
 @section('contents')
-
+ 
 <div class="container page-content"  >
   <div class="carousel fixed" data-width="100%" data-role="carousel" data-height="500" data-control-next="<span class='mif-chevron-right'></span>" data-control-prev="<span class='mif-chevron-left'></span>" data-effect="slowdown">
 

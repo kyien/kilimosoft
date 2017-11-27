@@ -13,13 +13,15 @@ protected $table='posts';
 protected $fillable=[
   'title',
   'body',
-  'user_id'
+  'user_id',
+  'image',
+  'group_id'
 ];
 
 public function groups(){
 
   return $this->belongsTo('App\Group');
-  
+
 }
 
 public function users(){

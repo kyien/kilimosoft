@@ -18,8 +18,9 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
-
+    use AuthenticatesUsers {
+    logout as performLogout;
+}
     /**
      * Where to redirect users after login.
      *
@@ -51,5 +52,11 @@ class LoginController extends Controller
         {
               return 'login';
         }
+
+        public function logout(Request $request)
+          {
+              $this->performLogout($request);
+              return redirect()->route('login');
+          }
 
 }

@@ -50,14 +50,14 @@
       <div class="collapse navbar-collapse" id="top-navbar-1">
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <span class="li-text">
-              Follow us @:
-            </span>
+
             <span class="li-social">
-              <a href="https://www.facebook.com/pages/Azmindcom/196582707093191" target="_blank"><i class="fa fa-facebook"></i></a>
-              <a href="https://twitter.com/anli_zaimi" target="_blank"><i class="fa fa-twitter"></i></a>
-              <a href="https://plus.google.com/+AnliZaimi_azmind" target="_blank"><i class="fa fa-google-plus"></i></a>
-              <a href="https://github.com/AZMIND" target="_blank"><i class="fa fa-github"></i></a>
+              &nbsp;
+              <a href="{{url('/')}}" ><i class="fa fa-home"></i></a>
+              <a href="https://www.facebook.com" target="_blank"><i class="fa fa-facebook"></i></a>
+              <a href="https://twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+              <a href="https://plus.google.com" target="_blank"><i class="fa fa-google-plus"></i></a>
+              <a href="https://github.com" target="_blank"><i class="fa fa-github"></i></a>
             </span>
           </li>
         </ul>
@@ -145,14 +145,6 @@
               </span>
               @endif
             </div>
-            <div class="f1-buttons">
-            <!--  <a href="{{ url('/login') }}" class="btn btn-info" role="button">Login</a>-->
-              <button type="button" class="btn btn-next">Next</button>
-            </div>
-          </fieldset>
-
-          <fieldset>
-            <h4>Your location:</h4>
 
             <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
               <label class="sr-only" for="email">E-Mail</label>
@@ -163,6 +155,16 @@
               </span>
               @endif
             </div>
+            <div class="f1-buttons">
+            <!--  <a href="{{ url('/login') }}" class="btn btn-info" role="button">Login</a>-->
+              <button type="button" class="btn btn-next">Next</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <h4>Your location:</h4>
+
+
             <div class="form-group{{ $errors->has('location') ? ' has-error' : '' }}">
             <!--  <label class="sr-only" for="location">Location</label>-->
 

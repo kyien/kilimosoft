@@ -1,7 +1,7 @@
 <?php
 
 namespace App;
-
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
 use Eloquent;
 
@@ -9,7 +9,7 @@ use Eloquent;
 class Group extends Model
 {
     //
-
+use Notifiable;
 
 protected $fillable = [
             'name',
@@ -39,6 +39,14 @@ protected $fillable = [
           public function posts(){
 
             return $this->hasMany('App\Post');
+          
           }
+
+          public function tools(){
+
+            return $this->belongsToMany('App\Tool','group_tool','group_id','tool_id');
+          }
+
+
 
         }

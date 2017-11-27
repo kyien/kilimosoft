@@ -15,6 +15,7 @@ use Flashy;
 use App\Http\Controllers\Controller;
 use App\Produce;
 use Vsmoraes\Pdf\Pdf;
+use App\Post;
 class GroupsController extends Controller
 {
     //
@@ -28,29 +29,59 @@ class GroupsController extends Controller
 
       public function index($group_id){
 
-$user=Auth::user();
-    // $group=DB::table('groups')->where('id',$id)->first();
- $group=Group::findOrFail($group_id);
-// $group=DB::table('groups');
-     $countusers=$group->users()->where('group_user.approved','=',1)->count();
-     $countrequests=$group->users()->where('group_user.approved','=',0)->count();
 
-  // $role=DB::table('group_user')->where([['group_id',$group_id],['role','=','admin']])->pluck('role')->first();
 
-  //dd($role);
-     return view('groups.index',compact('group','countusers','countrequests','admin','collector','user'));
+$group=Group::findOrFail($group_id);
+
+
+        $countusers=$group->users()->where('group_user.approved','=',1)->count();
+        $countrequests=$group->users()->where('group_user.approved','=',0)->count();
+
+    //  $group_posts=DB::table('posts')->where('group_id',$group_id)->get();
+$user_id=Auth::user()->id;
+
+    // $count_posts=DB::table('posts')->where('group_id',$group_id)->count();
+    $count_posts=$group->posts()->count();
+
+  $role=$group->users()->where([['group_id',$group_id],['user_id','=',$user_id]])->pluck('role')->first();
+
+  if($role=='admin'){
+
+   return view('groups.dashboard',compact('group','countusers','countrequests','count_posts'));
+
+
+ }
+ else{
+
+ return view('groups.index',compact('group','countusers','countrequests','count_posts'));
+     }
+
+   //dd( $user_id);
+
 
       }
 
-      public function admin_dash($group_id){
+      public function group_posts($group_id){
     $group=Group::findOrFail($group_id);
-         $countusers=$group->users()->where('group_user.approved','=',1)->count();
-         $countrequests=$group->users()->where('group_user.approved','=',0)->count();
-         $isadmin=Auth::user()->hasRole('admin');
-         $collector==Auth::user()->hasRole('collector');
-         $user==Auth::user()->hasRole('user');
 
-         return view('groups.dashboard',compact('group','countusers','countrequests','admin','collector','user'));
+ $group_posts=Group::with('users.posts')->where('id',$group_id)->get();
+
+ return view('groups.posts',compact('group','group_posts'));
+
+
+      }
+
+      public function group_info($group_id){
+        $group=Group::findOrFail($group_id);
+
+        return view('groups.manage.about_group')->with('group',$group);
+  }
+
+
+      public function create_group_view(){
+$produces= Produce::all();
+
+        return view('groups.group_create')->with('produces',$produces);
       }
 //method to insert data from create group form into database
 
@@ -81,7 +112,7 @@ $user=Auth::user();
 
 
 
-$group_users=$group->users()->attach( $user_id,['role'=>'admin', 'approved'=>true]);
+$group_users=$group->users()->attach( $user_id,['role'=>'admin', 'approved'=>true, 'creator'=>true]);
 $group_produce=$group->produces()->sync($data2);
 
   Flashy::success('Group created successfully!');
@@ -94,9 +125,9 @@ $group_produce=$group->produces()->sync($data2);
     public function update(Request $request,$id){
 
 //dd($request);
-        $validate=$this->validate($request,[
-          'description' => 'aplpha_dash|max:255',
-          'short_description'=> 'alpha_dash|max:255',
+        $this->validate($request,[
+          'description' => 'required|max:255',
+          'short_description'=> 'required|max:255',
         //  'image' => 'mimes:jpeg,png,gif,bmp',
 
       ]);
@@ -157,7 +188,7 @@ $group_produce=$group->produces()->sync($data2);
          public function show_joined_groups($id) {
              $user=User::findOrFail($id);
 
-         $usergroups=$user->groups()->where([['group_user.role','!=','admin'],['group_user.User_id','=',$id]])->get();
+         $usergroups=$user->groups()->where([['group_user.role','!=','admin'],['group_user.approved','=',1],])->get();
           //dd($group);
            return view('groups.joinedgroups')->with('usergroups',$usergroups);
          }
@@ -167,13 +198,9 @@ $group_produce=$group->produces()->sync($data2);
            $group=Group::findOrFail($group_id);
            $pendingusers=$group->users()->where('group_user.approved','=',0)->get();
 
-           if(!$pendingusers){
+         $countrequests=$group->users()->where('group_user.approved','=',0)->count();
 
-             Flashy::warning('Request failed!');
-             return redirect()->back();
-           }
-
-           return view('groups.manage.edit_requests',compact('group','pendingusers'));
+           return view('groups.manage.edit_requests',compact('group','pendingusers','countrequests'));
 
          }
          public function show_group_users($group_id){
@@ -181,6 +208,14 @@ $group_produce=$group->produces()->sync($data2);
              $groupusers=$group->users()->where('group_user.approved','=',1)->get();
 
              return view('groups.groupusers',compact('group','groupusers'));
+
+         }
+
+         public function edit_group_users($group_id){
+            $group=Group::findOrFail($group_id);
+             $groupusers=$group->users()->where([['group_user.approved','=',1],['group_user.role','!=','admin']])->get();
+
+             return view('groups.manage.editusers',compact('group','groupusers'));
 
          }
          public function delete_user($user_id,$group_id){

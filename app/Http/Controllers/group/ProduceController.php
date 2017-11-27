@@ -11,6 +11,7 @@ use Validator;
 use App\Produce;
 use App\User;
 use Charts;
+use Auth;
 use App\Group;
 use App\Userproduce;
 class ProduceController extends Controller
@@ -26,33 +27,52 @@ class ProduceController extends Controller
           return view('groups.produce',compact('group','groupusers','grouproduces'));
                   }
 
-    public function store(Request $request,$id){
-      $this->validate($request,[
-          'quantity' => 'required|numeric|max:255',
-          'produce'=> 'required'
+    public function store(Request $request){
+
+   $this->validate($request,[
+          'quantity' => 'required|numeric|integer|min:1',
+          'produce'=> 'required',
+          'member'=>'required',
+          'units'=>'required'
         ]);
 
-     Userproduce::create([
+
+        list($data1,$data2)=explode('|',$request->member);
+        list($p1,$p2)=explode('|',$request->produce);
+
+
+    $product= Userproduce::create([
       'quantity' => $request->quantity,
-      'user_id' => $request->member,
-      'produce_name'=>$request->produce,
+      'user_id' => $data1,
+      'member_name'=>$data2,
+      'produce_name'=>$p2,
       'units'=>$request->units,
-      'group_id' => $id,
+      'group_id' => $request->group_id,
+      'group_name'=>$request->group_name
    ]);
-        $produceid=$request->produce_id;
-        $user=Auth::user();
-   $users_produce=$user->produces()->attach($produceid,['group_id'=>$id]);
 
-     Flashy::info('Produce Recorded!');
+        // $produceid=$p1;
+        // $user=Auth::user();
+  //  $users_produce_insert=$user->produces()->attach($produceid,['group_id'=>$request->group_id]);
+ if($product){
 
-    return redirect()->back();
+  return response()->json(['success'=>true, 'res'=>$product]);
+
+ }
+ else{
+
+     return response()->json(['success'=>false]);
+ }
+
+
+
 
     }
 
     public function produce_chart($id){
 
-     $group=DB::table('groups')->where('id',$id)->first();
-     $chart=Charts::database(Produce::all(), 'pie', 'highcharts')
+     $group=Group::findOrFail($id);
+     $chart=Charts::database(UserProduce::where('group_id',$id), 'pie', 'highcharts')
              ->title('All Produce')
              ->dimensions(1000, 500)
              ->responsive(true)
@@ -61,10 +81,13 @@ class ProduceController extends Controller
        return view('groups.viewproduce',compact('chart','group'));
      }
 
+
+
      public function getinfo(Request $request){
        $id=$request->id;
        //dd($id);
        $fill = DB::table('produces')->where('id', $id)->pluck('units');
+       
 //dd($fill);
          return response()->json(['success'=>true, 'info'=>$fill]);
 

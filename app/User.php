@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Cmgmyr\Messenger\Traits\Messagable;
+use Auth;
 //use GeniusTS\Roles\Traits\HasRoleAndPermission;
 //use GeniusTS\Roles\Contracts\HasRoleAndPermission as HasRoleAndPermissionContract;
 use Illuminate\Support\Facades\DB;
@@ -50,6 +51,12 @@ return $this->belongsToMany('App\Group','group_user','user_id','group_id')->with
 
       return $this->hasMany('App\Post');
     }
+
+    public function tools(){
+
+      return $this->belongsToMany('App\Tool','tool_member','user_id','tool_id')->withTimestamps();
+    }
+
     public function checkRole($user_role,$group_id,$user_id){
 
       // $role= $this->groups()
@@ -66,6 +73,17 @@ return $this->belongsToMany('App\Group','group_user','user_id','group_id')->with
 
                     return false;
                     }
+
+  public function hasGroup($user_id){
+
+            $query=DB::table('group_user')->where('user_id',$user_id)->exists();
+             if($query){
+               return true;
+             }
+            else {
+              return false;
+            }
+    }
 
 
 

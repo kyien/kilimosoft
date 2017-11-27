@@ -79,14 +79,17 @@
                 <br>  <br><br>
             <div class="input-control text full-size {{ $errors->has('cropsofinterest') ? ' has-error' : '' }}" data-role="input">
                 <label for="">Crop of Interest:</label>
-                <textarea style="padding-right: 37px;" name="cropsofinterest" id="cropsofinterest" value="{{ old('cropsofinterest') }}"></textarea>
-                @if ($errors->has('cropsofinterest'))
+                <select multiple="multiple" name="produce_id[]">
+                         @foreach($produces as $produce)
+                         <option value="{{$produce->id}}">{{$produce->name}}</option>
+                         @endforeach
+                </select>                @if ($errors->has('cropsofinterest'))
                 <span class="informer fg-red">
                   <strong>{{ $errors->first('cropsofinterest') }}</strong>
                 </span>
                 @endif
             </div>
-                <br><br><br><br>
+                <br><br><br>
                 <br>
             <br>
             <br>

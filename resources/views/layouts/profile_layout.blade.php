@@ -10,7 +10,7 @@
 
 <link rel="stylesheet" href="{{asset('css/font_family=open+sans.css')}}">
 <link rel="stylesheet" href="{{asset('css/font-awesome-4.7.0/css/font-awesome.min.css')}}">
-<!--<link rel="stylesheet" href="{{asset('css/bootstrap_3_3_3_4.min.css')}}">-->
+
 <link href="{{asset('css/flashy/font-family.css')}}" rel="stylesheet">
 <link href="{{asset('css/flashy/family_type.css')}}" rel="stylesheet">
 
@@ -26,17 +26,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
     <a class="w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   </li>
   <li><a href="{{'/home'}}" class="w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a></li>
-  <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a></li>
-  <li class="w3-hide-small"><a href="#" class="w3-padding-large w3-hover-white" title="Account Settings"><i class="fa fa-user"></i></a></li>
-  <li class="w3-hide-small w3-dropdown-hover">
-<a href="{{route('messages')}}" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>    <div class="w3-dropdown-content w3-white w3-card-4">
-      <a href="{{route('messages.create')}}">create new</a>
-      <a href="{{route('messages.show',['id'=> Auth::user()->id])}}">view users list</a>
+  <!-- <li class="w3-hide-small w3-dropdown-hover">
+<a href="#" class="w3-padding-large w3-hover-white" title="Messages"><i class="fa fa-envelope"></i></a>    <div class="w3-dropdown-content w3-white w3-card-4">
+      <a href="#">create new</a>
+      <a href="#">view users list</a>
 
     </div>
-  </li>
+  </li> -->
   <li class="w3-hide-small w3-dropdown-hover">
-    <a href="{{route('messages')}}" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-red">@include('messenger.unread-count')</span></a>
+    <a href="{{route('user.notify')}}" class="w3-padding-large w3-hover-white" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-red"></span></a>
     <div class="w3-dropdown-content w3-white w3-card-4">
 
     </div>
@@ -48,7 +46,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   </li>
   <li class="w3-dropdown-hover w3-hide-small w3-right">
      <a href="#" class="w3-padding-large w3-hover-white" title="My Account">
-       <img src="{{Storage::url('/users_avatars/'.$user->avatar)}}" class="w3-circle" style="height:25px;width:25px"> {{$user->firstName}}  </a>
+       <img src="{{Storage::url('users_avatars/'.$user->avatar)}}" class="w3-circle" style="height:25px;width:25px"> {{$user->firstName}}  </a>
      <div class="w3-dropdown-content w3-white w3-card-4">
         <a href="{{route('profile',['username'=> Auth::user()->username])}}">View profile</a>
        <a href="{{route('profile.edit',['id'=> $user->id])}}">Edit profile</a>
@@ -71,7 +69,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 <div id="navDemo" class="w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:51px">
   <ul class="w3-navbar w3-left-align w3-large w3-theme">
     <li><a class="w3-padding-large" href="#">home</a></li>
-    <li><a class="w3-padding-large" href="{{route('profile',['username'=> Auth::user()->username])}}">VIew Profile</a></li>
+    <li><a class="w3-padding-large" href="{{route('profile',['username'=> Auth::user()->username])}}">View Profile</a></li>
     <li><a class="w3-padding-large" href="{{route('profile.edit',['id'=> $user->id])}}">EditProfile</a></li>
     <li><a class="w3-padding-large" href="#">Log Out</a></li>
   </ul>
@@ -88,12 +86,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
   <br>
 <br/>
   <!-- Footer -->
-  <footer class="w3-container w3-theme-d3 w3-padding-16">
-    <h5>Footer</h5>
-    <br/>
-    <p>copyright @ <a href="#" target="_blank">Wabunifu</a></p>
-
-  </footer>
 
 
 
@@ -155,8 +147,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
 </script>
 <script src="{{asset('js/jquery_2_2_4.min.js')}}"></script>
 <script src="{{asset('js/Ajax.js')}}"></script>
-
  @include('flashy::message')
+ 
   </body>
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+  <footer class="w3-container w3-theme-d3 w3-padding-16">
+    <h5>Footer</h5>
+    <br/>
+    <p>copyright @ <a href="#" target="_blank">Wabunifu</a></p>
+
+  </footer>
 
   </html>

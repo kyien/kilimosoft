@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BootZard - Bootstrap Wizard Template</title>
+  <title>Kilimosoft Login</title>
 
   <!-- CSS -->
   <link rel="stylesheet" href="dev2/css/font-family-roboto.css">
@@ -50,14 +50,14 @@
       <div class="collapse navbar-collapse" id="top-navbar-1">
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <span class="li-text">
-            Follow us @:
-            </span>
+
             <span class="li-social">
-              <a href="https://www.facebook.com/pages/Azmindcom/196582707093191" target="_blank"><i class="fa fa-facebook"></i></a>
-              <a href="https://twitter.com/anli_zaimi" target="_blank"><i class="fa fa-twitter"></i></a>
-              <a href="https://plus.google.com/+AnliZaimi_azmind" target="_blank"><i class="fa fa-google-plus"></i></a>
-              <a href="https://github.com/AZMIND" target="_blank"><i class="fa fa-github"></i></a>
+              <a href="{{url('/')}}" ><i class="fa fa-home"></i></a>
+              &nbsp;
+              <a href="https://www.facebook.com" target="_blank"><i class="fa fa-facebook"></i></a>
+              <a href="https://twitter.com" target="_blank"><i class="fa fa-twitter"></i></a>
+              <a href="https://plus.google.com" target="_blank"><i class="fa fa-google-plus"></i></a>
+              <a href="https://github.com" target="_blank"><i class="fa fa-github"></i></a>
             </span>
           </li>
         </ul>

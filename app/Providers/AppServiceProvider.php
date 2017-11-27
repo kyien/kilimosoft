@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 use Validator;
+use App\Group;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -16,18 +17,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         //
-        $results= DB::table('total_produce_per_group')->get();
+        // $results= DB::table('total_produce_per_group')->get();
 
-            View::share('results',$results);
+        //     View::share('results',$results);
 
             $group= DB::table('groups')->get();
             View::share('group',$group);
-
+    //following variables are accessible to all views within the application
           View::composer('*', function($view){
 
             $view->with('user',Auth::user());
             $view->with('produce',DB::table('produces')->get());
-          //$view->with('group', DB::table('groups')->get());
+          // $view->with('group', new Group());
           });
 
           $this->app['validator']->extend('min_array_size', function($attribute, $value, $parameters) {

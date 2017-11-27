@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\group;
 
-
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Group;
 use App\User;
+use App\Notifications\JoinedGroup;
 use Flashy;
 
 class GrouprequestController extends Controller
@@ -35,10 +36,10 @@ class GrouprequestController extends Controller
                }
                else {
 
-$group_user=$group->users()->attach( $user_id,['role'=>'user', 'approved'=>false]);
-
-Flashy::success('Request successfully made!');
-   return redirect()->back();
+      $group_user=$group->users()->attach( $user_id,['role'=>'user', 'approved'=>false]);
+//dd('mino');
+             Flashy::success('Request successfully made!');
+            return redirect()->back();
 
                }
 
@@ -49,7 +50,10 @@ Flashy::success('Request successfully made!');
      public function accept_group_request($user_id,$group_id){
 
        $group=Group::findOrFail($group_id);
-       $accept=$group->users()->update($user_id, ['approved'=>true]);
+       $accept=$group->users()->updateExistingPivot($user_id,['approved'=>true]);
+
+        $user=User::find($user_id);
+        $user->notify(new JoinedGroup());
 
        Flashy::success('User added successfully!');
 return redirect()->back();
@@ -61,7 +65,8 @@ return redirect()->back();
             $group=Group::findOrFail($group_id);
             $group->users()->detach($user_id);
 
-
+          Flashy::success('User added successfully!');
+            return redirect()->back();
      }
 
 

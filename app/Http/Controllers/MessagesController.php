@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Flashy;
+use Validator;
+use App\Group;
 class MessagesController extends Controller
 {
     /**
@@ -20,17 +22,18 @@ class MessagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($group_id)
     {
         //
         $userAvatar= Auth::user()->avatar;
         $currentUserId = Auth::user()->id;
         // All threads, ignore deleted/archived participants
         $threads = Thread::getAllLatest()->get();
+        //dd($threads);
         // All threads that user is participating in
-
+        $group=Group::findOrFail($group_id);
         // $threads = Thread::forUserWithNewMessages($currentUserId)->latest('updated_at')->get();
-        return view('messenger.default', compact('threads', 'currentUserId'));
+        return view('groups.messenger.default', compact('threads', 'currentUserId','group'));
 
     }
 
@@ -39,12 +42,14 @@ class MessagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create($group_id)
     {
         //
-
-        $users = User::where('id', '!=', Auth::id())->get();
-        return view('messenger.create', compact('users'));
+        $group=Group::findOrFail($group_id);
+        // $users = User::where('id', '!=', Auth::id())->get();
+        $users=$group->users()->get();
+//dd($users);
+        return view('groups.messenger.create', compact('users','group'));
     }
 
     /**
@@ -55,7 +60,15 @@ class MessagesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+      //  dd($request->all());
+        $this->validate($request,[
+          'subject'=>'required',
+          'message' =>'required',
+          'recipients'=>'required'
+        ]);
+
+      //  dd($request->subject);
         $input = Input::all();
         $thread = Thread::create(
             [
@@ -83,7 +96,7 @@ class MessagesController extends Controller
             $thread->addParticipant($input['recipients']);
         }
 
-        Flash::success('Message sent successfully');
+        Flashy::success('Message sent successfully!');
         return redirect()->back();
     }
 
@@ -95,7 +108,7 @@ class MessagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id,$group_id)
     {
         //
         try {
@@ -107,10 +120,11 @@ class MessagesController extends Controller
     // show current user in list if not a current participant
             // $users = User::whereNotIn('id', $thread->participantsUserIds())->get();
             // don't show the current user in list
+            $group=Group::findOrFail($group_id);
             $userId = Auth::user()->id;
             $users = User::whereNotIn('id', $thread->participantsUserIds($userId))->get();
             $thread->markAsRead($userId);
-            return view('messenger.show', compact('thread', 'users'));
+            return view('messenger.show', compact('thread', 'users','group'));
           }
     /*
      * Show the form for editing the specified resource.
@@ -165,7 +179,7 @@ class MessagesController extends Controller
 
     }
 
-  
+
     public function destroy($id)
     {
         //

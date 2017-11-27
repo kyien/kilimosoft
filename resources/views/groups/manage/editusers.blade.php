@@ -26,7 +26,7 @@
   @foreach($groupusers as $user)
 <tr>
   <td ><img src="{{Storage::url('/users_avatars/'.$user->avatar)}}" class="w3-circle " style="height:75px;width:75px"></td>
-  <td>{{$user->firstname}}</td>
+  <td>{{$user->firstName}}</td>
   <td >{{$user->location}}</td>
   <td >{{$user->phoneNo}}</td>
     <td >{{$user->email}}</td>
@@ -34,6 +34,7 @@
     <a href="{{route('deleteuser',['user_id'=>$user->id, 'group_id'=>$group->id])}}">
       <button class="w3-btn w3-padding w3-teal join" style="width:120px" >Delete User </button>
     </a>
+  
 
     </td>
 </tr>

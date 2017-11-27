@@ -15,6 +15,7 @@ class Userproduce extends Model
     protected $fillable=[
       'user_id',
       'quantity',
+      'member_name',
       'produce_name',
       'group_id',
       'units',

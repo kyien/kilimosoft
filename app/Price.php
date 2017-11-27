@@ -16,6 +16,7 @@ class Price extends Model
     protected $fillable=[
       'produce_id',
       'unit_price',
+      'produce_name'
     ];
 
     public function crops(){

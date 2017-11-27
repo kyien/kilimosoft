@@ -53,18 +53,18 @@
     </a>
     <div class="app-bar-divider"></div>
     <div class="app-bar-element place-right">
-      <a class="dropdown-toggle fg-white"><span class="mif-enter"></span> Login</a>
+      <a  href="#" class="dropdown-toggle fg-white"><span class="mif-enter"></span> Login</a>
       <div class="app-bar-drop-container bg-white fg-dark place-right" data-role="dropdown" data-no-close="true">
         <div class="padding20">
           <form method="POST" action="{{ url('/login')}}">
             {{ csrf_field() }}
             <h4 class="text-light">Login to service...</h4>
-            <div class="input-control text{{ $errors->has('phoneNo') ? ' has-error' : '' }}">
+            <div class="input-control text{{ $errors->has('login') ? ' has-error' : '' }}">
               <span class="mif-user prepend-icon"></span>
-              <input type="text"  name="phoneNo" value="{{ old('phoneNo') }}" placeholder="Phone..">
-              @if ($errors->has('phoneNo'))
+              <input type="text"  name="login" value="{{ old('login') }}" placeholder="Phone..">
+              @if ($errors->has('login'))
               <span class="informer">
-                <strong>{{ $errors->first('phoneNo') }}</strong>
+                <strong>{{ $errors->first('login') }}</strong>
               </span>
               @endif
             </div>
@@ -126,7 +126,7 @@
   <a href="#" class="dropdown-toggle">Join</a>
   <ul class="d-menu" data-role="dropdown" data-no-close="true">
     <li><a href="{{ url('/register') }}">Register</a></li>
-    
+
     <li><a href="{{ url('/login') }}">Login</a></li>
   </ul>
 </li><li class="" data-flexorder="4" data-flexorderorigin="3">
@@ -186,10 +186,10 @@
  <script src="dev1/js/docs.js"></script>
  <script src="dev1/js/prettify/run_prettify.js"></script>
  <script src="dev1/js/ga.js"></script>
- 
+
  <script src="js/jquery_2_2_4.js"></script>
 
- @include('flashy::message')
+@include('flashy::message')
 
 </body>
 

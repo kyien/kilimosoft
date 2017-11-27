@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="{{asset('css/w3.css')}}">
 <link rel="stylesheet" href="{{asset('css/font-family.css')}}">
 <link rel="stylesheet" href="{{asset('css/font-awesome-4.7.0/css/font-awesome.min.css')}}">
+<link rel="stylesheet" href="{{asset('css/jquery-ui.css')}}">
 <link href="{{asset('css/flashy/font-family.css')}}" rel="stylesheet">
 <link href="{{asset('css/flashy/family_type.css')}}" rel="stylesheet">
 
@@ -28,35 +29,58 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
   <button class="w3-btn w3-hide-large w3-padding-0 w3-hover-text-grey" onclick="w3_open();"><i class="fa fa-bars"></i>  Menu</button>
 
 <ul class="w3-navbar  w3-card-2">
-  <li><span class="w3-left-align"><a href="{{'/'}}"><img src="{{Storage::url('/group_avatars/'.$group->image)}}"
+  <li><span class="w3-left-align"><a href="{{'/'}}"><img src="{{Storage::url('group_avatars/'.$group->image)}}"
      style="height: 45px; display: inline-block; margin-left: 25px;"> </a></span></li>
+
     <li class="w3-left-align"><a href="#"><h4>{{$group->name}}</h4></a></li>
 <li class="w3-left-align"><a href="{{'/home'}}"><h4><i class="fa fa-home w3-margin-right"></i></h4></a></li>
+ @if(Auth::user()->checkRole('admin',$group->id,$user->id))
 <li class="w3-dropdown-hover w3-left">
-<a href="#">View Reports</a>
+<a href="#">Group Reports</a>
 <div class="w3-dropdown-content w3-white w3-card-4">
-  <a href="{{route('group.report',['id'=>$group->id])}}">Group</a>
+  <a href="{{route('group.allusersreport',['group_id'=>$group->id])}}">group users</a>
 
-<a href="{{route('farmers.details',['id'=>$group->id])}}">Farmers Report</a>
+<a href="{{route('group.allproducereport',['group_id'=>$group->id])}}">group produce</a>
+<!-- <a href="#">group tools</a>
+<a href="#">inventory history</a>
+<a href="#">Buyers report</a>
+<a href="#">Sales report</a> -->
 
-    <a href="#">Individual</a>
+
+</div>
+
+</li>
+@endif
+<li class="w3-dropdown-hover w3-left">
+<a href="#">My Reports</a>
+<div class="w3-dropdown-content w3-white w3-card-4">
+  <a href="{{route('farmers.reportpergroup',['user_id'=>$user->id,'group_id'=>$group->id])}}">All Produce </a>
+  <a href="{{route('form.query',['group_id'=>$group->id])}}">Custom</a>
+  <a href="{{route('group.pricesreport',['group_id'=>$group->id])}}">Prices</a>
+<!-- <a href="#">Per produce</a> -->
+
+
 </div>
 </li>
 <li class="w3-dropdown-hover w3-left-align">
   <a href="#">Inventory</h4></a>
   <div class="w3-dropdown-content w3-white w3-card-4">
-    <a href="#">View Available</a>
+    <a href="{{route('group.toolsearchform',['group_id'=>$group->id])}}">View Available</a>
+     @if(Auth::user()->checkRole('admin',$group->id,$user->id))
+    <a href="{{route('group.toolregister',['group_id'=>$group->id])}}">Add</a>
+    <a href="{{route('group.tooledit',['group_id'=>$group->id])}}">Update</a>
 
-  <a href="#">Add</a>
-
-      >
+    @endif
   </div>
 
 
 </li>
+<li class="w3-left"><a href="{{route('group.post',['group_id'=>$group->id])}}"><h4>Posts</h4></a></li>
+<li class="w3-left"><a href="{{route('about.group',['group_id'=>$group->id])}}"><h4><i class="fa fa-info-circle "></i>About Group</h4></a></li>
 
     <!--<li><span class="w3-display-topright"><a href="#"><i class="fa fa-cog" ></i>Settings</a></span></div></li>-->
 <!--  <li class="w3-right"><a href="{{'/'}}"><i class="fa fa-sign-out"></i> Log Out</a></li>-->
+  @if(Auth::user()->checkRole('admin',$group->id,$user->id))
  <li class="w3-dropdown-hover w3-right">
     <a href="#"><i class="fa fa-cog" ></i> Settings</a>
     <div class="w3-dropdown-content w3-white w3-card-4">
@@ -65,7 +89,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
     </div>
   </li>
-
+@endif
  </ul>
 </div>
 
@@ -100,48 +124,45 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 
 @if(Auth::user()->checkRole('admin',$group->id,$user->id))
-<a href="{{route('group.dash',['group_id'=> $group->id])}}" class="w3-padding w3-blue"><i class="fa fa-users fa-fw"></i>Dashboard</a>
+<a href="{{route('group',['group_id'=> $group->id])}}" class="w3-padding w3-blue">Dashboard</a>
 
 
 <div class="w3-dropdown-hover">
     <a class="w3-padding" href="javascript:void(0)"><i class="fa fa-users fa-fw"></i>Manage users <i class="fa fa-caret-down"></i></a>
     <div class="w3-dropdown-content w3-white w3-card-4">
 
-      <a href="javascript:void(0)" class="w3-hover-blue">Edit User</a>
-        <a href="#" class="w3-hover-blue">Assign Roles</a>
+      <a href="{{route('edit_group.users',['group_id'=>$group->id])}}" class="w3-hover-blue">Edit User</a>
+        <a href="{{route('changerole',['group_id'=>$group->id])}}" class="w3-hover-blue">Assign Roles</a>
 
     </div>
   </div>
 @endif
-  <a href="#" class="w3-padding"><i class="fa fa-plus fa-fw"></i> create Post</a>
-<a href="#" class="w3-padding"><i class="fa fa-bar-chart fa-fw"></i> Statistics</a>
+  <a href="{{route('post.view',['group_id'=>$group->id])}}" class="w3-padding"><i class="fa fa-plus fa-fw"></i> create Post</a>
+
+
+    @if(Auth::user()->checkRole('admin',$group->id,$user->id) || Auth::user()->checkRole('collector',$group->id,$user->id))
 <div class="w3-dropdown-hover">
-<a href="#" class="w3-padding"><i class="fa fa-dollar fa fa-dollar fa-fw"></i>Sales &nbsp; <i class="fa fa-caret-down"></i></a>
-<div class="w3-dropdown-content w3-white w3-card-4">
-  @if(Auth::user()->checkRole('admin',$group->id,$user->id))
-    <a href="{{route('sale',['id'=> $group->id])}}" class="w3-hover-blue">Group sales</a>
-    @endif
-    <a href="#" class="w3-hover-blue">My sales</a>
-  </div></div>
-<div class="w3-dropdown-hover">
-<a href="javascript:void(0)" class="w3-padding"><i class="fa fa-shopping-cart fa-fw"></i>Produce &nbsp; <i class="fa fa-caret-down"></i></a>
+<a href="javascript:void(0)" class="w3-padding"><i class="fa fa-shopping-cart fa-fw"></i>Produce &nbsp; </a>
 <div class="w3-dropdown-content w3-white w3-card-4">
   <a href="{{route('form.produce',['id'=> $group->id])}}" class="w3-hover-blue">Enter</a>
-  <a href="{{route('produce.chart',['id'=> $group->id])}}" class="w3-hover-blue">view</a>
+  <!-- <a href="{{route('produce.chart',['id'=> $group->id])}}" class="w3-hover-blue">view</a> -->
 </div>
 </div>
-<a href="#" class="w3-padding"><i class="fa fa-check-square-o fa-fw"></i>  Orders</a>
-<div class="w3-dropdown-hover">
-    <a class="w3-padding" href="javascript:void(0)"><i class="fa fa-comment fa-fw"></i>Notifications  <i class="fa fa-caret-down"></i></a>
+@endif
+<!-- <a href="#" class="w3-padding"><i class="fa fa-check-square-o fa-fw"></i>  Bidders</a> -->
+
+<!-- <div class="w3-dropdown-hover">
+    <a class="w3-padding" href="javascript:void(0)"><i class="fa fa-comment fa-fw"></i> GroupNotifications  <i class="fa fa-caret-down"></i></a>
     <div class="w3-dropdown-content w3-white w3-card-4">
-      <a href="{{URL::route('messages')}}" class="w3-hover-blue">Messenger</a>
-      <a href="javascript:void(0)" class="w3-hover-blue">SMS</a>
+      <a href="{{route('messages.create',['group_id'=> $group->id])}}" class="w3-hover-blue">create</a>
+
     </div>
-  </div>
+  </div> -->
 
 <a href="{{route('group.price',['id'=>$group->id])}}" class="w3-padding"><i class="fa fa-line-chart fa-fw"></i>  Market</a>
+  @if(Auth::user()->checkRole('admin',$group->id,$user->id))
 <a href="{{route('group.edit',['id'=> $group->id])}}" class="w3-padding"><i class="fa fa-cog fa-fw"></i>  Settings</a>
-
+@endif
   <br><br>
 
 </nav>
@@ -151,7 +172,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Raleway", sans-serif}
 
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:300px;margin-top:43px;">
-
+ @include('flashy::message')
 @yield('content')
 
   <!-- Footer -->
@@ -213,8 +234,12 @@ function w3_close() {
     ]); ?>
 </script>
 <script src="{{asset('js/jquery_2_1_4.min.js')}}"></script>
+<script src="{{asset('js/jquery-ui.min.js')}}"></script>
 <script src="{{asset('js/produceajax.js')}}"></script>
 
- @include('flashy::message')
+<script src="{{asset('js/tool_edit.js')}}"></script>
+<script src="{{asset('js/datepicker.js')}}"></script>
+
+
 </body>
 </html>

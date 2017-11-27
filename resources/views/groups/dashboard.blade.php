@@ -9,8 +9,8 @@
 
   <div class="w3-row-padding w3-margin-bottom">
 
-    <div class="w3 col-l2 w3-center">
-    <a href="{{URL::route('messages')}}">
+    <!-- <div class="w3 col-l2 w3-center">
+    <a href="{{route('messages',['group_id'=>$group->id])}}">
  <div class="w3-quarter">
       <div class="w3-container w3-red w3-padding-16">
         <div class="w3-left"><i class="fa fa-comment w3-xxxlarge"></i></div>
@@ -21,8 +21,8 @@
         <h4>Messages</h4>
       </div>
     </div>
-  </a></div>
-  <div class="w3 col-l0.25 w3-center">
+  </a></div> -->
+  <div class="w3 col-l0.25 w3-center"></div>
 <div class="w3 col-l2 w3-center">
     <a href="{{route('pending.users',['group_id'=>$group->id])}}">
       <div class="w3-quarter">
@@ -36,21 +36,22 @@
       </div>
     </div></a>
   </div>
-    <div class="w3 col-l0.25 w3-center">
+    <div class="w3 col-l0.25 w3-center"></div>
   <div class="w3 col-l2 w3-center">
-<a href="#">
+<a href="{{route('group.post',['group_id'=>$group->id])}}">
     <div class="w3-quarter">
       <div class="w3-container w3-teal w3-padding-16">
         <div class="w3-left"><i class="fa fa-share-alt w3-xxxlarge"></i></div>
         <div class="w3-right">
-          <h3>23</h3>
+          <h3>{{$count_posts}}</h3>
         </div>
         <div class="w3-clear"></div>
         <h4>Posts</h4>
       </div>
     </div></a>
-</div>
-  <div class="w3 col-l0.25 w3-center">
+  </div>
+
+  <div class="w3 col-l0.25 w3-center"></div>
 <div class="w3 col-l2 w3-center">
     <a href="{{route('group.users',['group_id'=>$group->id])}}"><div class="w3-quarter">
       <div class="w3-container w3-orange w3-text-white w3-padding-16">
@@ -63,8 +64,8 @@
       </div>
     </div></a>
   </div>
-  </div>
 
+</div>
   <div class="w3-container w3-section">
     <div class="w3-row-padding" style="margin:0 -16px">
 

@@ -2,9 +2,9 @@
 $(document).ready(function(){
 console.log('hello world!');
   $('#join-form').submit(function(e) {
-  /*  $.ajaxSetup({
+    $.ajaxSetup({
            headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
-       });*/
+       });
   e.preventDefault();
     var id= $('.group_id').val();
     var url = '/group/request';
